@@ -1,7 +1,6 @@
 import './App.css';
 import { useState } from 'react';
 
-
 function App() {
 
   const [nome, setNome] = useState("")
@@ -39,7 +38,7 @@ function App() {
             Adicionar
           </button>
           <button
-            type="button"
+            type="submit"
             className="verificar">
             Verificar
           </button>
