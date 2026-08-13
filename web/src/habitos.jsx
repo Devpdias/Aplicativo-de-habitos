@@ -13,6 +13,18 @@ function Habitos() {
         buscaDeHabitos()
     }, [])
 
+    async function atualizarCheck(id, novoValor) {
+        const atualizar = await fetch(`http://localhost:3220/habitos/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({
+                concluido: novoValor
+            })
+        });
+    };
+
     return (
         <>
             <div>
@@ -22,10 +34,13 @@ function Habitos() {
                         <div key={item.id}>
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluido}
-                                onChange={(e) => setHabito(habito.map((item2) => (
-                                    item2.id === item.id ? { ...item2, concluido: e.target.checked }
-                                        : item2
-                          )))} />
+                                onChange={(e) => {
+                                    setHabito(habito.map((item2) => (
+                                        item2.id === item.id ? { ...item2, concluido: e.target.checked }
+                                            : item2
+                                    )))
+                                    atualizarCheck(item.id, e.target.checked)
+                                }} />
                         </div>
                     ))}
                 </div>
