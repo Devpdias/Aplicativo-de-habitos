@@ -10,14 +10,6 @@ app.use(express.json())
 
 app.use('/habitos', habitos);
 
-app.post("/habitos", (req, res) => {
-  const {nome} = req.body
-
-  res.json({
-    mensagem: "Hábito Recebido!"
-  })
-})
-
 app.listen(port, () => {
   console.log(`servidor rodando na porta ${port}`)
 });
