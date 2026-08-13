@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import CriarHabito from "./criarHabito.jsx"
 import Habitos from "./habitos.jsx"
-import './App.css'
+import './estilos/App.css';
 
 function App() {
 
