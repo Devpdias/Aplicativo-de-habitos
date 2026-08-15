@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 function Habitos() {
 
     const [habito, setHabito] = useState([])
+    const [posicao, setPosicao] = useState(null)
 
     useEffect(() => {
         async function buscaDeHabitos() {
@@ -27,11 +28,14 @@ function Habitos() {
 
     return (
         <>
-            <div>
+            <div onClick={() => setPosicao(null)}>
                 <h1>Meus Hábitos</h1>
                 <div>
                     {habito.map((item) => (
-                        <div key={item.id}>
+                        <div key={item.id} onContextMenu={(e) => {
+                            e.preventDefault()
+                            setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
+                        }}>
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluido}
                                 onChange={(e) => {
@@ -43,6 +47,16 @@ function Habitos() {
                                 }} />
                         </div>
                     ))}
+                    {
+                        posicao && (
+                            <div className="showHabito" style={{
+                                left: posicao.x,
+                                top: posicao.y,
+                            }}>
+                                Excluir Hábito
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </>
