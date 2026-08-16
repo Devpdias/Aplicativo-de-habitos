@@ -26,6 +26,14 @@ function Habitos() {
         });
     };
 
+    async function deleteHabito(id){
+        const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
+            method: "DELETE"
+        })
+        setHabito(habito.filter((item) => item.id !== id))
+        setPosicao(null)
+    }
+
     return (
         <>
             <div onClick={() => setPosicao(null)}>
@@ -49,7 +57,7 @@ function Habitos() {
                     ))}
                     {
                         posicao && (
-                            <div className="showHabito" style={{
+                            <div className="showHabito" onClick={() => {deleteHabito(posicao.id)}} style={{
                                 left: posicao.x,
                                 top: posicao.y,
                             }}>

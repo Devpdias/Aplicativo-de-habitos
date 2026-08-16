@@ -32,4 +32,12 @@ router.patch("/:id", async(req, res) => {
   });
 });
 
+  router.delete("/:id", async(req, res) => {
+    const { id } = req.params
+    await db("habitos").where({ id }).delete()
+    res.json({
+      mensagem: "hábito deletado"
+    });
+  });
+
 module.exports = router;
