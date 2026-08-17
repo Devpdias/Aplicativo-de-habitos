@@ -7,13 +7,15 @@ const db = knex(require("./knexfile.js").development);
 router.post("/", async (req, res) => {
   const { nome } = req.body;
 
-  await db("habitos").insert({
+  const [id] = await db("habitos").insert({
     nome,
     concluido: false,
   });
 
   res.json({
-    mensagem: "hábito salvo no banco",
+    id, 
+    nome, 
+    concluido: false
   });
 });
 

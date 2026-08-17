@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import CriarHabito from "./criarHabito"
 
 function Habitos() {
 
@@ -14,6 +15,21 @@ function Habitos() {
         buscaDeHabitos()
     }, [])
 
+    async function criarHabito(nome) {
+        const resposta = await fetch("http://localhost:3220/habitos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome: nome
+            })
+        })
+
+        const habitoNovo = await resposta.json()
+        setHabito([...habito, habitoNovo])
+    }
+
     async function atualizarCheck(id, novoValor) {
         const atualizar = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "PATCH",
@@ -26,7 +42,7 @@ function Habitos() {
         });
     };
 
-    async function deleteHabito(id){
+    async function deleteHabito(id) {
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "DELETE"
         })
@@ -38,6 +54,7 @@ function Habitos() {
         <>
             <div onClick={() => setPosicao(null)}>
                 <h1>Meus Hábitos</h1>
+                <CriarHabito aoCriar={criarHabito}/>
                 <div>
                     {habito.map((item) => (
                         <div key={item.id} onContextMenu={(e) => {
@@ -57,7 +74,7 @@ function Habitos() {
                     ))}
                     {
                         posicao && (
-                            <div className="showHabito" onClick={() => {deleteHabito(posicao.id)}} style={{
+                            <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }} style={{
                                 left: posicao.x,
                                 top: posicao.y,
                             }}>
