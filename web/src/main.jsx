@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './estilos/index.css'
-import CriarHabito from './criarHabito.jsx'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

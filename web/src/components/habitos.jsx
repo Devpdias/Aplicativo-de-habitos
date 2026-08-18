@@ -47,14 +47,24 @@ function Habitos() {
             method: "DELETE"
         })
         setHabito(habito.filter((item) => item.id !== id))
-        setPosicao(null)
     }
+
+    useEffect(() => {
+        function fecharMenu() {
+            setPosicao(null)
+        }
+        document.addEventListener("click", fecharMenu)
+
+        return () => {
+            document.removeEventListener("click", fecharMenu)
+        }
+    }, [])
 
     return (
         <>
-            <div onClick={() => setPosicao(null)}>
+            <div>
                 <h1>Meus Hábitos</h1>
-                <CriarHabito aoCriar={criarHabito}/>
+                <CriarHabito aoCriar={criarHabito} />
                 <div>
                     {habito.map((item) => (
                         <div key={item.id} onContextMenu={(e) => {

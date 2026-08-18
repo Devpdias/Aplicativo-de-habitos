@@ -1,4 +1,4 @@
-import './estilos/App.css';
+import '../estilos/app.css';
 import { useState } from 'react';
 
 function CriarHabito({aoCriar}) {
