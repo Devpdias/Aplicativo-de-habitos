@@ -30,15 +30,9 @@ function Habitos() {
         setHabito([...habito, habitoNovo])
     }
 
-    async function atualizarCheck(id, novoValor) {
-        const atualizar = await fetch(`http://localhost:3220/habitos/${id}`, {
+    async function atualizarCheck(id) {
+        const atualizar = await fetch(`http://localhost:3220/habitos/${id}/registros`, {
             method: "PATCH",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                concluido: novoValor
-            })
         });
     };
 
@@ -72,13 +66,13 @@ function Habitos() {
                             setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
                         }}>
                             <span>{item.nome}</span>
-                            <input type="checkbox" checked={item.concluido}
+                            <input type="checkbox" checked={item.concluidoHoje}
                                 onChange={(e) => {
                                     setHabito(habito.map((item2) => (
-                                        item2.id === item.id ? { ...item2, concluido: e.target.checked }
+                                        item2.id === item.id ? { ...item2, concluidoHoje: e.target.checked }
                                             : item2
                                     )))
-                                    atualizarCheck(item.id, e.target.checked)
+                                    atualizarCheck(item.id)
                                 }} />
                         </div>
                     ))}
