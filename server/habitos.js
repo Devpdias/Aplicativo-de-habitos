@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
   });
 
   res.json({
-    id, 
-    nome, 
-    concluido: false
+    id,
+    nome,
+    concluido: false,
   });
 });
 
@@ -24,22 +24,45 @@ router.get("/", async (req, res) => {
   res.json(habitos);
 });
 
-router.patch("/:id", async(req, res) => {
+router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { concluido } = req.body;
   await db("habitos").where({ id }).update({ concluido });
 
   res.json({
-    mensagem: "hábito atualizado"
+    mensagem: "hábito atualizado",
   });
 });
 
-  router.delete("/:id", async(req, res) => {
-    const { id } = req.params
-    await db("habitos").where({ id }).delete()
-    res.json({
-      mensagem: "hábito deletado"
+router.patch("/:id/registros", async (req, res) => {
+  const { id } = req.params;
+  const data = new Date().toISOString().split("T")[0];
+
+  const registroExistente = await db("registros")
+    .where({ data, habito_id: id })
+    .first();
+
+  if (!registroExistente) {
+    await db("registros").insert({
+      habito_id: id,
+      data: data,
+      concluido: true,
     });
+  } else {
+    await db("registros").where({ id: registroExistente.id }).delete();
+  }
+
+  res.json({
+    mensagem: "registro por data feito"
+  })
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  await db("habitos").where({ id }).delete();
+  res.json({
+    mensagem: "hábito deletado",
   });
+});
 
 module.exports = router;
