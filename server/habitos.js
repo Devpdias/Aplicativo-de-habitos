@@ -21,6 +21,12 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const habitos = await db.select("*").from("habitos");
+  const data = new Date().toISOString().split("T")[0]
+  const concluidoHoje = await db("registros").where({data: data})
+
+  const habitosComStatus = habitos.map((habito) => {
+    
+  })
   res.json(habitos);
 });
 
