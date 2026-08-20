@@ -21,13 +21,14 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const habitos = await db.select("*").from("habitos");
-  const data = new Date().toISOString().split("T")[0]
-  const concluidoHoje = await db("registros").where({data: data})
+  const data = new Date().toISOString().split("T")[0];
+  const concluidoHoje = await db("registros").where({ data });
 
   const habitosComStatus = habitos.map((habito) => {
-    
+    const concluido = concluidoHoje.some((registro) => registro.habito_id === habito.id)
+    return ({...habito, concluidoHoje: concluido}) 
   })
-  res.json(habitos);
+  res.json(habitosComStatus);
 });
 
 router.patch("/:id", async (req, res) => {
@@ -59,8 +60,8 @@ router.patch("/:id/registros", async (req, res) => {
   }
 
   res.json({
-    mensagem: "registro por data feito"
-  })
+    mensagem: "registro por data feito",
+  });
 });
 
 router.delete("/:id", async (req, res) => {
