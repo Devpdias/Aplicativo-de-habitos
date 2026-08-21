@@ -34,6 +34,11 @@ function Habitos() {
         const atualizar = await fetch(`http://localhost:3220/habitos/${id}/registros`, {
             method: "PATCH",
         });
+        const resposta = await atualizar.json()
+        setHabito(habito.map((item) => (
+            item.id === id ? { ...item, concluidoHoje: resposta.concluido }
+                : item
+        )))
     };
 
     async function deleteHabito(id) {
@@ -67,13 +72,7 @@ function Habitos() {
                         }}>
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluidoHoje}
-                                onChange={(e) => {
-                                    setHabito(habito.map((item2) => (
-                                        item2.id === item.id ? { ...item2, concluidoHoje: e.target.checked }
-                                            : item2
-                                    )))
-                                    atualizarCheck(item.id)
-                                }} />
+                                onChange={() => {atualizarCheck(item.id)}} />
                         </div>
                     ))}
                     {

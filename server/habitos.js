@@ -25,9 +25,11 @@ router.get("/", async (req, res) => {
   const concluidoHoje = await db("registros").where({ data });
 
   const habitosComStatus = habitos.map((habito) => {
-    const concluido = concluidoHoje.some((registro) => registro.habito_id === habito.id)
-    return ({...habito, concluidoHoje: concluido}) 
-  })
+    const concluido = concluidoHoje.some(
+      (registro) => registro.habito_id === habito.id,
+    );
+    return { ...habito, concluidoHoje: concluido };
+  });
   res.json(habitosComStatus);
 });
 
@@ -49,18 +51,22 @@ router.patch("/:id/registros", async (req, res) => {
     .where({ data, habito_id: id })
     .first();
 
+  let concluido = false;
+
   if (!registroExistente) {
     await db("registros").insert({
       habito_id: id,
       data: data,
       concluido: true,
     });
+    concluido = true;
   } else {
     await db("registros").where({ id: registroExistente.id }).delete();
+    concluido = false;
   }
 
   res.json({
-    mensagem: "registro por data feito",
+    concluido: concluido,
   });
 });
 
