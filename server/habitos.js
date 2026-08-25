@@ -66,4 +66,18 @@ router.delete("/:id", async (req, res) => {
   });
 });
 
+router.get("/estatisticas/dias", async (req, res) => {
+  const data = new Date().toISOString().split("T")[0];
+  const habitosConcluidosHoje = await db("registros").where({ data });
+  const habitos = await db.select("*").from("habitos");
+
+  const numHabitosFeitosHoje = habitosConcluidosHoje.length;
+  const numHabitos = habitos.length;
+
+  res.json({
+    numHabitosFeitosHoje,
+    numHabitos,
+  });
+});
+
 module.exports = router;
