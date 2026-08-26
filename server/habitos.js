@@ -91,7 +91,7 @@ router.get("/estatisticas/semana", async (req, res) => {
   const dataSegunda = hoje.toISOString().split("T")[0];
   const dataHoje = new Date().toISOString().split("T")[0];
 
-  const resgistroSemana = await db("registros").whereBetween("data", [
+  const registroSemana = await db("registros").whereBetween("data", [
     dataSegunda,
     dataHoje,
   ]);
@@ -105,15 +105,17 @@ router.get("/estatisticas/semana", async (req, res) => {
   }
 
   const EstatisticaSemana = diasSemana.map((diaSemana) => {
-    const quantidade = resgistroSemana.filter((registro) => {
+    const quantidadeConcluido = registroSemana.filter((registro) => {
       return registro.data === diaSemana;
     }).length;
-    return { dia: diaSemana, quantidade: quantidade };
+    return { dia: diaSemana, quantidadeConcluido: quantidadeConcluido };
   });
 
   res.json({
     EstatisticaSemana,
   });
 });
+
+router.get("/estatisticas/mes", async (req, res) => {});
 
 module.exports = router;
