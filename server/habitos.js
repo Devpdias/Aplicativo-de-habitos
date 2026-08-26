@@ -80,4 +80,40 @@ router.get("/estatisticas/dias", async (req, res) => {
   });
 });
 
+router.get("/estatisticas/semana", async (req, res) => {
+  const hoje = new Date();
+  const diaDaSemana = hoje.getDay();
+
+  const diasDeSegunda = diaDaSemana === 0 ? 6 : diaDaSemana - 1;
+
+  hoje.setDate(hoje.getDate() - diasDeSegunda);
+
+  const dataSegunda = hoje.toISOString().split("T")[0];
+  const dataHoje = new Date().toISOString().split("T")[0];
+
+  const resgistroSemana = await db("registros").whereBetween("data", [
+    dataSegunda,
+    dataHoje,
+  ]);
+
+  let diasSemana = [];
+  for (let i = 0; i < 7; i++) {
+    const diaAtual = new Date(dataSegunda);
+    diaAtual.setDate(diaAtual.getDate() + i);
+    const diaDaSemana = diaAtual.toISOString().split("T")[0];
+    diasSemana.push(diaDaSemana);
+  }
+
+  const EstatisticaSemana = diasSemana.map((diaSemana) => {
+    const quantidade = resgistroSemana.filter((registro) => {
+      return registro.data === diaSemana;
+    }).length;
+    return { dia: diaSemana, quantidade: quantidade };
+  });
+
+  res.json({
+    EstatisticaSemana,
+  });
+});
+
 module.exports = router;
