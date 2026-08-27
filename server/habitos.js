@@ -116,6 +116,41 @@ router.get("/estatisticas/semana", async (req, res) => {
   });
 });
 
-router.get("/estatisticas/mes", async (req, res) => {});
+router.get("/estatisticas/mes", async (req, res) => {
+  const hoje = new Date();
+
+  const mes = hoje.getMonth();
+  const ano = hoje.getFullYear();
+
+  const ultimoDiaMes = new Date(ano, mes + 1, 0);
+  const primeiroDiaMes = new Date(ano, mes, 1);
+
+  const ultimoDiaDoMes = ultimoDiaMes.toISOString().split("T")[0];
+  const primeiroDiaDoMes = primeiroDiaMes.toISOString().split("T")[0];
+
+  const registroMes = await db("registros").whereBetween("data", [
+    primeiroDiaDoMes,
+    ultimoDiaDoMes,
+  ]);
+
+  let diasMes = [];
+  for (let i = 0; i < ultimoDiaMes.getDate(); i++) {
+    const diaAtual = new Date(primeiroDiaDoMes);
+    diaAtual.setDate(diaAtual.getDate() + i);
+    const diaDoMes = diaAtual.toISOString().split("T")[0];
+    diasMes.push(diaDoMes);
+  }
+
+  const estatisticaMes = diasMes.map((diaMes) => {
+    const quantidadeConcluido = registroMes.filter((registro) => {
+      return registro.data === diaMes;
+    }).length;
+    return { dia: diaMes, quantidadeConcluido: quantidadeConcluido };
+  });
+
+  res.json({
+    estatisticaMes,
+  });
+});
 
 module.exports = router;
