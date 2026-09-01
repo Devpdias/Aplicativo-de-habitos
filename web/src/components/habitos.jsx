@@ -7,6 +7,7 @@ function Habitos() {
 
     const [habito, setHabito] = useState([])
     const [posicao, setPosicao] = useState(null)
+    const [estatisticaDia, setEstatisticaDia] = useState({})
 
     useEffect(() => {
         async function buscaDeHabitos() {
@@ -41,6 +42,7 @@ function Habitos() {
             item.id === id ? { ...item, concluidoHoje: resposta.concluido }
                 : item
         )))
+        buscarEstatisticaDia()
     };
 
     async function deleteHabito(id) {
@@ -61,12 +63,22 @@ function Habitos() {
         }
     }, [])
 
+    async function buscarEstatisticaDia() {
+        const resposta = await fetch('http://localhost:3220/habitos/estatisticas/dias')
+        const dados = await resposta.json()
+        setEstatisticaDia(dados)
+    }
+
+    useEffect(() => {
+        buscarEstatisticaDia()
+    }, [])
+
     return (
         <>
             <div>
                 <h1>Meus Hábitos</h1>
                 <EstatisticaSemana></EstatisticaSemana>
-                <EstatisticaDia></EstatisticaDia>
+                <EstatisticaDia dados={estatisticaDia}></EstatisticaDia>
                 <CriarHabito aoCriar={criarHabito} />
                 <div>
                     {habito.map((item) => (
@@ -76,7 +88,7 @@ function Habitos() {
                         }}>
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluidoHoje}
-                                onChange={() => {atualizarCheck(item.id)}} />
+                                onChange={() => { atualizarCheck(item.id) }} />
                         </div>
                     ))}
                     {
