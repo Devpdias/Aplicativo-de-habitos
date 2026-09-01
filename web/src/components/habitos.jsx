@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import CriarHabito from "./criarHabito"
 import EstatisticaSemana from "./estatisticaSemana"
+import EstatisticaDia from "./estatisticaDia"
 
 function Habitos() {
 
@@ -65,6 +66,7 @@ function Habitos() {
             <div>
                 <h1>Meus Hábitos</h1>
                 <EstatisticaSemana></EstatisticaSemana>
+                <EstatisticaDia></EstatisticaDia>
                 <CriarHabito aoCriar={criarHabito} />
                 <div>
                     {habito.map((item) => (
