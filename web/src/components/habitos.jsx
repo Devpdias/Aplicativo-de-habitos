@@ -79,7 +79,6 @@ function Habitos() {
             <div>
                 <h1>Meus Hábitos</h1>
                 <EstatisticaDia dados={estatisticaDia}></EstatisticaDia>
-                <EstatisticaMes></EstatisticaMes>
                 <CriarHabito aoCriar={criarHabito} />
                 <div>
                     {habito.map((item) => (

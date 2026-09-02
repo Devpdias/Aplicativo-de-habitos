@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts'
 
 function EstatisticaSemana() {
     const [semana, setSemana] = useState([])
