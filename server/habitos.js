@@ -4,6 +4,17 @@ const knex = require("knex");
 
 const db = knex(require("./knexfile.js").development);
 
+function formatarDataLocal(date) {
+  const ano = date.getFullYear();
+  const mes = String(date.getMonth() + 1).padStart(2, "0");
+  const dia = String(date.getDate()).padStart(2, "0");
+  return `${ano}-${mes}-${dia}`;
+}
+
+function dataLocalHoje() {
+  return formatarDataLocal(new Date());
+}
+
 router.post("/", async (req, res) => {
   const { nome } = req.body;
 
@@ -19,7 +30,7 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const habitos = await db.select("*").from("habitos");
-  const data = new Date().toISOString().split("T")[0];
+  const data = dataLocalHoje();
   const concluidoHoje = await db("registros").where({ data });
 
   const habitosComStatus = habitos.map((habito) => {
@@ -33,7 +44,7 @@ router.get("/", async (req, res) => {
 
 router.patch("/:id/registros", async (req, res) => {
   const { id } = req.params;
-  const data = new Date().toISOString().split("T")[0];
+  const data = dataLocalHoje();
 
   const registroExistente = await db("registros")
     .where({ data, habito_id: id })
@@ -67,7 +78,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/estatisticas/dias", async (req, res) => {
-  const data = new Date().toISOString().split("T")[0];
+  const data = dataLocalHoje();
   const habitosConcluidosHoje = await db("registros").where({ data });
   const habitos = await db.select("*").from("habitos");
 
@@ -91,8 +102,8 @@ router.get("/estatisticas/semana", async (req, res) => {
 
   hoje.setDate(hoje.getDate() - diasDeSegunda);
 
-  const dataSegunda = hoje.toISOString().split("T")[0];
-  const dataHoje = new Date().toISOString().split("T")[0];
+  const dataSegunda = formatarDataLocal(hoje);
+  const dataHoje = dataLocalHoje();
 
   const habitos = await db.select("*").from("habitos");
   const totalHabito = habitos.length;
@@ -104,9 +115,9 @@ router.get("/estatisticas/semana", async (req, res) => {
 
   let diasSemana = [];
   for (let i = 0; i < 7; i++) {
-    const diaAtual = new Date(dataSegunda);
+    const diaAtual = new Date(dataSegunda + "T00:00:00");
     diaAtual.setDate(diaAtual.getDate() + i);
-    const diaDaSemana = diaAtual.toISOString().split("T")[0];
+    const diaDaSemana = formatarDataLocal(diaAtual);
     diasSemana.push(diaDaSemana);
   }
 
@@ -137,8 +148,8 @@ router.get("/estatisticas/mes", async (req, res) => {
   const ultimoDiaMes = new Date(ano, mes + 1, 0);
   const primeiroDiaMes = new Date(ano, mes, 1);
 
-  const ultimoDiaDoMes = ultimoDiaMes.toISOString().split("T")[0];
-  const primeiroDiaDoMes = primeiroDiaMes.toISOString().split("T")[0];
+  const ultimoDiaDoMes = formatarDataLocal(ultimoDiaMes);
+  const primeiroDiaDoMes = formatarDataLocal(primeiroDiaMes);
 
   const registroMes = await db("registros").whereBetween("data", [
     primeiroDiaDoMes,
@@ -150,9 +161,9 @@ router.get("/estatisticas/mes", async (req, res) => {
 
   let diasMes = [];
   for (let i = 0; i < ultimoDiaMes.getDate(); i++) {
-    const diaAtual = new Date(primeiroDiaDoMes);
+    const diaAtual = new Date(primeiroDiaDoMes + "T00:00:00");
     diaAtual.setDate(diaAtual.getDate() + i);
-    const diaDoMes = diaAtual.toISOString().split("T")[0];
+    const diaDoMes = formatarDataLocal(diaAtual);
     diasMes.push(diaDoMes);
   }
 
