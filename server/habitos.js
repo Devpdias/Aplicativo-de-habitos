@@ -145,6 +145,9 @@ router.get("/estatisticas/mes", async (req, res) => {
     ultimoDiaDoMes,
   ]);
 
+  const habitos = await db.select("*").from("habitos");
+  const totalHabito = habitos.length;
+
   let diasMes = [];
   for (let i = 0; i < ultimoDiaMes.getDate(); i++) {
     const diaAtual = new Date(primeiroDiaDoMes);
@@ -157,7 +160,13 @@ router.get("/estatisticas/mes", async (req, res) => {
     const quantidadeConcluido = registroMes.filter((registro) => {
       return registro.data === diaMes;
     }).length;
-    return { dia: diaMes, quantidadeConcluido: quantidadeConcluido };
+
+    const porcentagem = (quantidadeConcluido / totalHabito) * 100;
+    return {
+      dia: diaMes,
+      quantidadeConcluido: quantidadeConcluido,
+      porcentagem: porcentagem,
+    };
   });
 
   res.json({
