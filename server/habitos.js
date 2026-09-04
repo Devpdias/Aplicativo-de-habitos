@@ -189,18 +189,13 @@ router.patch("/:id/importante", async (req, res) => {
   const { id } = req.params;
   const habitoImportante = await db("habitos").where({ id }).first();
 
-  let importante = false;
-  if (!habitoImportante) {
-    await db("habitos").update({
-      importante: true,
-    });
-    importante = true;
-  } else {
-    await db("habitos").update({
-      importante: false,
-    });
-    importante = false;
-  }
+  const novoValor = !habitoImportante.importante;
+
+  await db("habitos").where({ id }).update({importante: novoValor})
+
+  res.json({
+    importante: novoValor
+  })
 });
 
 module.exports = router;

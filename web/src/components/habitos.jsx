@@ -46,6 +46,17 @@ function Habitos() {
         buscarEstatisticaDia()
     };
 
+    async function atualizarImportante(id) {
+        const atualizar = await fetch(`http://localhost:3220/habitos/${id}/importante`, {
+            method: "PATCH",
+        })
+        const resposta = await atualizar.json()
+        setHabito(habito.map((item) => (
+            item.id === id ? { ...item, importante: resposta.importante }
+                : item
+        )))
+    }
+
     async function deleteHabito(id) {
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "DELETE"
@@ -89,6 +100,8 @@ function Habitos() {
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluidoHoje}
                                 onChange={() => { atualizarCheck(item.id) }} />
+                            <input type="checkBox" checked={item.importante}
+                                onChange={() => { atualizarImportante(item.id) }} />
                         </div>
                     ))}
                     {
