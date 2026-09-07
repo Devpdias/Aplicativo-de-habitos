@@ -84,3 +84,24 @@
   border-radius: 10px;
   transition: width 0.3s ease;
 }
+
+.checkboxEstrela {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkboxEstrela::before {
+  content: "☆";
+  font-size: 24px;
+  color: #999;
+  position: absolute;
+}
+
+.checkboxEstrela:checked::before {
+  content: "★";
+  color: rgb(216, 191, 232);
+}

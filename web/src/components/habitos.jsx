@@ -100,7 +100,7 @@ function Habitos() {
                             <span>{item.nome}</span>
                             <input type="checkbox" checked={item.concluidoHoje}
                                 onChange={() => { atualizarCheck(item.id) }} />
-                            <input type="checkBox" checked={item.importante}
+                            <input type="checkBox" className="checkboxEstrela" checked={item.importante}
                                 onChange={() => { atualizarImportante(item.id) }} />
                         </div>
                     ))}
