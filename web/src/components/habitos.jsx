@@ -92,7 +92,7 @@ function Habitos() {
                 <EstatisticaDia dados={estatisticaDia}></EstatisticaDia>
                 <CriarHabito aoCriar={criarHabito} />
                 <div>
-                    {habito.map((item) => (
+                    {habito.sort((a, b) => b.importante - a.importante).map((item) => (
                         <div key={item.id} onContextMenu={(e) => {
                             e.preventDefault()
                             setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
