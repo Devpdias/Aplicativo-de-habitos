@@ -12,12 +12,24 @@ function Importantes() {
         buscarImportantes()
     }, [])
 
+    async function atualizarCheck(id) {
+        const atualizar = await fetch(`http://localhost:3220/habitos/${id}/registros`, {
+            method: "PATCH",
+        });
+        const resposta = await atualizar.json()
+        setHabitoImportante((atual) => atual.map((item) => (
+            item.id === id ? { ...item, concluidoHoje: resposta.concluido } : item
+        )))
+    };
+
     return (
         <div>
             <h1>Hábitos Importantes</h1>
             {habitoImportante.map((item) => (
                 <div key={item.id}>
                     <span>{item.nome}</span>
+                    <input type="checkbox" checked={item.concluidoHoje}
+                        onChange={() => { atualizarCheck(item.id) }} />
                 </div>
             ))}
         </div>

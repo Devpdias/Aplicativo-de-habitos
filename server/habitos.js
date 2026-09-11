@@ -187,8 +187,16 @@ router.get("/estatisticas/mes", async (req, res) => {
 
 router.get("/importantes", async (req, res) => {
   const habitosImportantes = await db("habitos").where({ importante: true });
+  const data = dataLocalHoje();
+  const concluidoHoje = await db("registros").where({ data });
+  const habitosComStatus = habitosImportantes.map((habito) => {
+    const concluido = concluidoHoje.some(
+      (registro) => registro.habito_id === habito.id,
+    );
+    return { ...habito, concluidoHoje: concluido };
+  });
   res.json({
-    habitosImportantes,
+    habitosImportantes: habitosComStatus,
   });
 });
 
