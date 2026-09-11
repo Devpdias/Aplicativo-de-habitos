@@ -185,17 +185,24 @@ router.get("/estatisticas/mes", async (req, res) => {
   });
 });
 
+router.get("/importantes", async (req, res) => {
+  const habitosImportantes = await db("habitos").where({ importante: true });
+  res.json({
+    habitosImportantes,
+  });
+});
+
 router.patch("/:id/importante", async (req, res) => {
   const { id } = req.params;
   const habitoImportante = await db("habitos").where({ id }).first();
 
   const novoValor = !habitoImportante.importante;
 
-  await db("habitos").where({ id }).update({importante: novoValor})
+  await db("habitos").where({ id }).update({ importante: novoValor });
 
   res.json({
-    importante: novoValor
-  })
+    importante: novoValor,
+  });
 });
 
 module.exports = router;
