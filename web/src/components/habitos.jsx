@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import CriarHabito from "./criarHabito"
-import EstatisticaSemana from "./estatisticaSemana"
 import EstatisticaDia from "./estatisticaDia"
-import EstatisticaMes from "./estatisticaMes"
 
 function Habitos() {
 
