@@ -213,4 +213,28 @@ router.patch("/:id/importante", async (req, res) => {
   });
 });
 
+router.get("/:id/streak", async (req, res) => {
+  const { id } = req.params;
+
+  let streak = 0;
+  let dataAtual = new Date();
+
+  while (true) {
+    const dataFormatada = formatarDataLocal(dataAtual);
+
+    const registro = await db("registros")
+      .where({ habito_id: id, data: dataFormatada, concluido: true })
+      .first();
+
+    if (!registro) {
+      break;
+    }
+
+    streak++;
+    dataAtual.setDate(dataAtual.getDate() - 1);
+  }
+
+  res.json({ streak });
+});
+
 module.exports = router;
