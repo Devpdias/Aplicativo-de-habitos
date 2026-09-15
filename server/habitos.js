@@ -235,6 +235,6 @@ router.get("/:id/streak", async (req, res) => {
   }
 
   res.json({ streak });
-});
+});//rever isto aqui, apagar e tentar refazer
 
 module.exports = router;
