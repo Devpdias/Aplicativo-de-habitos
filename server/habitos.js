@@ -213,28 +213,30 @@ router.patch("/:id/importante", async (req, res) => {
   });
 });
 
-router.get("/:id/streak", async (req, res) => {
-  const { id } = req.params;
-
-  let streak = 0;
+async function calcularStreak(id) {
   let dataAtual = new Date();
-
+  let streak = 0;
   while (true) {
-    const dataFormatada = formatarDataLocal(dataAtual);
-
-    const registro = await db("registros")
-      .where({ habito_id: id, data: dataFormatada, concluido: true })
+    const dataBuscada = formatarDataLocal(dataAtual);
+    const registros = await db("registros")
+      .where({ data: dataBuscada, concluido: true, habito_id: id })
       .first();
-
-    if (!registro) {
+    if (registros) {
+      streak++;
+      dataAtual.setDate(dataAtual.getDate() - 1);
+    } else {
       break;
     }
-
-    streak++;
-    dataAtual.setDate(dataAtual.getDate() - 1);
   }
+  return streak
+}
 
-  res.json({ streak });
-});//rever isto aqui, apagar e tentar refazer
+router.get("/:id/streak", async (req, res) => {
+  const { id } = req.params;
+  const habitoStreak = await calcularStreak(id)
+  res.json({
+    habitoStreak,
+  })
+});
 
 module.exports = router;
