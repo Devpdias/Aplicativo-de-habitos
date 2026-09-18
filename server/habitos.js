@@ -237,6 +237,6 @@ router.get("/:id/streak", async (req, res) => {
   res.json({
     habitoStreak,
   })
-});
+});//usar em pagina de detalhes de hábito especifico
 
 module.exports = router;
