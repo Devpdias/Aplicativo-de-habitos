@@ -10,6 +10,24 @@ function Calendario() {
         }
         buscarEstatisticaMes()
     }, [])
+    const data = new Date()
+    const ano = data.getFullYear()
+    const mes = data.getMonth()
+    const primeiroDiaMes = new Date(ano, mes, 1)
+    const espacosVazios = primeiroDiaMes.getDay()
+
+    const vazios = Array(espacosVazios).fill(null)
+    const celulasCompletas = [...vazios, ...estatisticaMes]
+
+    return (
+        <div>
+            <h2>Calendário</h2>
+            <div className="calendarioGrid">
+                {celulasCompletas.map((celula, indice) => (
+                    celula === null ? <div key={indice}></div> : <div key={indice}>{new Date(celula.dia + "T00:00:00").getDate()}</div>))}
+            </div>
+        </div>
+    )
 }
 
 export default Calendario 

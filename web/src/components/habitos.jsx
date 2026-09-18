@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import CriarHabito from "./criarHabito"
 import EstatisticaDia from "./estatisticaDia"
+import Calendario from "./calendario"
 
 function Habitos() {
 
@@ -87,6 +88,7 @@ function Habitos() {
         <>
             <div>
                 <h1>Meus Hábitos</h1>
+                <Calendario></Calendario>
                 <EstatisticaDia dados={estatisticaDia}></EstatisticaDia>
                 <CriarHabito aoCriar={criarHabito} />
                 <div>
