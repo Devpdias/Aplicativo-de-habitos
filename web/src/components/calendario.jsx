@@ -18,10 +18,16 @@ function Calendario() {
 
     const vazios = Array(espacosVazios).fill(null)
     const celulasCompletas = [...vazios, ...estatisticaMes]
+    const diaSemanaAbreviado = ["D", "S", "T", "Q", "Q", "S", "S"]
 
     return (
         <div>
             <h2>Calendário</h2>
+            <div className="calendarioGrid">
+                {diaSemanaAbreviado.map((dia, indice) => (
+                    <div key={indice}>{dia}</div>
+                ))}
+            </div>
             <div className="calendarioGrid">
                 {celulasCompletas.map((celula, indice) => (
                     celula === null ? <div key={indice}></div> : <div key={indice}>{new Date(celula.dia + "T00:00:00").getDate()}</div>))}
