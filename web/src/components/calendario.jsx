@@ -25,12 +25,20 @@ function Calendario() {
             <h2>Calendário</h2>
             <div className="calendarioGrid">
                 {diaSemanaAbreviado.map((dia, indice) => (
-                    <div key={indice}>{dia}</div>
+                    <div key={indice} style= {{color:"black"}}>{dia}</div>
                 ))}
             </div>
             <div className="calendarioGrid">
                 {celulasCompletas.map((celula, indice) => (
-                    celula === null ? <div key={indice}></div> : <div key={indice}>{new Date(celula.dia + "T00:00:00").getDate()}</div>))}
+                    celula === null ? <div key={indice}></div> : <div
+                        key={indice}
+                        style={{
+                            backgroundColor: `rgba(34, 197, 94, ${celula.porcentagem / 100})`,
+                            color: celula.porcentagem > 0 ? "white" : "black"
+                        }}
+                    >
+                        {new Date(celula.dia + "T00:00:00").getDate()}
+                    </div>))}
             </div>
         </div>
     )
