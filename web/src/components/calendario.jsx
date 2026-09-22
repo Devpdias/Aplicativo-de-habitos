@@ -44,9 +44,9 @@ function Calendario() {
     const hoje = formatarDataLocal(new Date())
 
     return (
-        <div>
+        <div className="calendarioContainer">
             <h2>Calendário</h2>
-            <div>
+            <div className="calendarioNavegacao">
                 <button onClick={voltarMes}>{"<"}</button>
                 <span>{mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
                 <button onClick={avancarMes}>{">"}</button>
@@ -62,7 +62,7 @@ function Calendario() {
                         key={indice}
                         style={{
                             backgroundColor: `rgba(34, 197, 94, ${celula.porcentagem / 100})`,
-                            color: celula.porcentagem > 0 ? "white" : "black",
+                            color: "black",
                             border: celula.dia === hoje ? "3px solid rgb(36, 17, 17)" : "none"
                         }}
                     >
