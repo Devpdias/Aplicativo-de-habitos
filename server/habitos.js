@@ -140,13 +140,13 @@ router.get("/estatisticas/semana", async (req, res) => {
 });
 
 router.get("/estatisticas/mes", async (req, res) => {
-  const hoje = new Date();
+  const {ano, mes} = req.query;
 
-  const mes = hoje.getMonth();
-  const ano = hoje.getFullYear();
+  const mesNumero = Number(mes) - 1;
+  const anoNumero = Number(ano);
 
-  const ultimoDiaMes = new Date(ano, mes + 1, 0);
-  const primeiroDiaMes = new Date(ano, mes, 1);
+  const ultimoDiaMes = new Date(anoNumero, mesNumero + 1, 0);
+  const primeiroDiaMes = new Date(anoNumero, mesNumero, 1);
 
   const ultimoDiaDoMes = formatarDataLocal(ultimoDiaMes);
   const primeiroDiaDoMes = formatarDataLocal(primeiroDiaMes);
