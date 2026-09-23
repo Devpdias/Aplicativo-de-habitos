@@ -140,7 +140,7 @@ router.get("/estatisticas/semana", async (req, res) => {
 });
 
 router.get("/estatisticas/mes", async (req, res) => {
-  const {ano, mes} = req.query;
+  const { ano, mes } = req.query;
 
   const mesNumero = Number(mes) - 1;
   const anoNumero = Number(ano);
@@ -228,15 +228,26 @@ async function calcularStreak(id) {
       break;
     }
   }
-  return streak
+  return streak;
 }
 
 router.get("/:id/streak", async (req, res) => {
   const { id } = req.params;
-  const habitoStreak = await calcularStreak(id)
+  const habitoStreak = await calcularStreak(id);
   res.json({
     habitoStreak,
-  })
-});//usar em pagina de detalhes de hábito especifico
+  });
+}); //usar em pagina de detalhes de hábito especifico
+
+router.patch("/:id/:novoNome", async (req, res) => {
+  const { id } = req.params;
+  const { novoNome } = req.params;
+
+  await db("habitos").where({ id }).update({ nome: novoNome });
+
+  res.json({
+    mensagem: "Nome do hábito trocado",
+  });
+});
 
 module.exports = router;
