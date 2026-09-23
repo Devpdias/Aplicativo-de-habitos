@@ -47,9 +47,9 @@ function Calendario() {
         <div className="calendarioContainer">
             <h2>Calendário</h2>
             <div className="calendarioNavegacao">
-                <button onClick={voltarMes}>{"<"}</button>
+                <button onClick={voltarMes}>{"←"}</button>
                 <span>{mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</span>
-                <button onClick={avancarMes}>{">"}</button>
+                <button onClick={avancarMes}>{"→"}</button>
             </div>
             <div className="calendarioGrid">
                 {diaSemanaAbreviado.map((dia, indice) => (
