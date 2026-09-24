@@ -239,9 +239,9 @@ router.get("/:id/streak", async (req, res) => {
   });
 }); //usar em pagina de detalhes de hábito especifico
 
-router.patch("/:id/:novoNome", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { novoNome } = req.params;
+  const { novoNome } = req.body;
 
   await db("habitos").where({ id }).update({ nome: novoNome });
 
