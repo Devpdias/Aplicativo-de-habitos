@@ -71,7 +71,8 @@ router.patch("/:id/registros", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  await db("habitos").where({ id }).delete();
+  const agora = new Date()
+  await db("habitos").where({ id }).update({deletado_em: agora});
   res.json({
     mensagem: "hábito deletado",
   });
@@ -157,7 +158,7 @@ router.get("/estatisticas/mes", async (req, res) => {
   ]);
 
   const habitos = await db.select("*").from("habitos");
-  const totalHabito = habitos.length;
+  const totalHabito = habitos.length;//verificar como calcular hábitos que tinham até aquele momento
 
   let diasMes = [];
   for (let i = 0; i < ultimoDiaMes.getDate(); i++) {
@@ -172,7 +173,7 @@ router.get("/estatisticas/mes", async (req, res) => {
       return registro.data === diaMes;
     }).length;
 
-    const porcentagem = (quantidadeConcluido / totalHabito) * 100;
+    const porcentagem = (quantidadeConcluido / totalHabito) * 100;//verificar esta porcentagem para a coloração não mudar, ver hábitos que tinham até o dia especifico
     return {
       dia: diaMes,
       quantidadeConcluido: quantidadeConcluido,
@@ -237,7 +238,7 @@ router.get("/:id/streak", async (req, res) => {
   res.json({
     habitoStreak,
   });
-}); //usar em pagina de detalhes de hábito especifico
+});
 
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;

@@ -8,6 +8,7 @@ function Habitos() {
     const [habito, setHabito] = useState([])
     const [posicao, setPosicao] = useState(null)
     const [estatisticaDia, setEstatisticaDia] = useState({})
+    const [editando, setEditando] = useState(null)
 
     useEffect(() => {
         async function buscaDeHabitos() {
@@ -66,6 +67,7 @@ function Habitos() {
     useEffect(() => {
         function fecharMenu() {
             setPosicao(null)
+            setEditando(null)
         }
         document.addEventListener("click", fecharMenu)
 
@@ -83,6 +85,8 @@ function Habitos() {
     useEffect(() => {
         buscarEstatisticaDia()
     }, [])
+
+
 
     return (
         <>
@@ -106,11 +110,13 @@ function Habitos() {
                     ))}
                     {
                         posicao && (
-                            <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }} style={{
-                                left: posicao.x,
-                                top: posicao.y,
-                            }}>
-                                Excluir Hábito
+                            <div>
+                                <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }} style={{
+                                    left: posicao.x,
+                                    top: posicao.y,
+                                }}>
+                                    Excluir Hábito
+                                </div>
                             </div>
                         )
                     }
