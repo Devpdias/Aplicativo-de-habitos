@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const habitos = await db.select("*").from("habitos");
+  const habitos = await db.select("*").from("habitos").whereNull("deletado_em");
   const data = dataLocalHoje();
   const concluidoHoje = await db("registros").where({ data });
 
