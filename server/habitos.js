@@ -17,9 +17,11 @@ function dataLocalHoje() {
 
 router.post("/", async (req, res) => {
   const { nome } = req.body;
+  const agora = new Date()
 
   const [id] = await db("habitos").insert({
     nome,
+    criado_em: agora
   });
 
   res.json({
