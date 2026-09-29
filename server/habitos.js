@@ -17,11 +17,11 @@ function dataLocalHoje() {
 
 router.post("/", async (req, res) => {
   const { nome } = req.body;
-  const agora = new Date()
+  const agora = new Date();
 
   const [id] = await db("habitos").insert({
     nome,
-    criado_em: agora
+    criado_em: agora,
   });
 
   res.json({
@@ -73,8 +73,8 @@ router.patch("/:id/registros", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const agora = new Date()
-  await db("habitos").where({ id }).update({deletado_em: agora});
+  const agora = new Date();
+  await db("habitos").where({ id }).update({ deletado_em: agora });
   res.json({
     mensagem: "hábito deletado",
   });
@@ -159,9 +159,6 @@ router.get("/estatisticas/mes", async (req, res) => {
     ultimoDiaDoMes,
   ]);
 
-  const habitos = await db.select("*").from("habitos");
-  const totalHabito = habitos.length;//verificar como calcular hábitos que tinham até aquele momento
-
   let diasMes = [];
   for (let i = 0; i < ultimoDiaMes.getDate(); i++) {
     const diaAtual = new Date(primeiroDiaDoMes + "T00:00:00");
@@ -170,12 +167,26 @@ router.get("/estatisticas/mes", async (req, res) => {
     diasMes.push(diaDoMes);
   }
 
+  const habitos = await db.select("*").from("habitos");
+
   const estatisticaMes = diasMes.map((diaMes) => {
+    const habitosNesseDia = habitos.filter((habito) => {
+      const criadosAntes =
+        new Date(habito.criado_em) <= new Date(diaMes + "T23:59:59");
+      const naoDeletadoAinda =
+        !habito.deletado_em ||
+        new Date(habito.deletado_em) > new Date(diaMes + "T23:59:59");
+      return criadosAntes && naoDeletadoAinda;
+    });
+
+    const totalHabitosNesseDia = habitosNesseDia.length;
+
     const quantidadeConcluido = registroMes.filter((registro) => {
       return registro.data === diaMes;
     }).length;
 
-    const porcentagem = (quantidadeConcluido / totalHabito) * 100;//verificar esta porcentagem para a coloração não mudar, ver hábitos que tinham até o dia especifico
+    const porcentagem = totalHabitosNesseDia > 0 ? (quantidadeConcluido / totalHabitosNesseDia) * 100 : 0;
+
     return {
       dia: diaMes,
       quantidadeConcluido: quantidadeConcluido,
