@@ -83,7 +83,7 @@ router.delete("/:id", async (req, res) => {
 router.get("/estatisticas/dias", async (req, res) => {
   const data = dataLocalHoje();
   const habitosConcluidosHoje = await db("registros").where({ data });
-  const habitos = await db.select("*").from("habitos");
+  const habitos = await db.select("*").from("habitos").whereNull("deletado_em")
 
   const numHabitosFeitosHoje = habitosConcluidosHoje.length;
   const numHabitos = habitos.length;
@@ -108,9 +108,6 @@ router.get("/estatisticas/semana", async (req, res) => {
   const dataSegunda = formatarDataLocal(hoje);
   const dataHoje = dataLocalHoje();
 
-  const habitos = await db.select("*").from("habitos");
-  const totalHabito = habitos.length;
-
   const registroSemana = await db("registros").whereBetween("data", [
     dataSegunda,
     dataHoje,
@@ -124,12 +121,29 @@ router.get("/estatisticas/semana", async (req, res) => {
     diasSemana.push(diaDaSemana);
   }
 
+  const habitos = await db.select("*").from("habitos");
+
   const EstatisticaSemana = diasSemana.map((diaSemana) => {
+    const habitosNesseDia = habitos.filter((habito) => {
+      const criadoAntes =
+        new Date(habito.criado_em) <= new Date(diaSemana + "T23:59:59");
+      const naoDeletadoAinda =
+        !habito.deletado_em ||
+        new Date(habito.deletado_em) > new Date(diaSemana + "T23:59:59");
+      return criadoAntes && naoDeletadoAinda;
+    });
+
+    const totalHabitosNesseDia = habitosNesseDia.length;
+
     const quantidadeConcluido = registroSemana.filter((registro) => {
       return registro.data === diaSemana;
     }).length;
 
-    const porcentagem = (quantidadeConcluido / totalHabito) * 100;
+    const porcentagem =
+      totalHabitosNesseDia > 0
+        ? (quantidadeConcluido / totalHabitosNesseDia) * 100
+        : 0;
+
     return {
       dia: diaSemana,
       quantidadeConcluido: quantidadeConcluido,
@@ -185,7 +199,10 @@ router.get("/estatisticas/mes", async (req, res) => {
       return registro.data === diaMes;
     }).length;
 
-    const porcentagem = totalHabitosNesseDia > 0 ? (quantidadeConcluido / totalHabitosNesseDia) * 100 : 0;
+    const porcentagem =
+      totalHabitosNesseDia > 0
+        ? (quantidadeConcluido / totalHabitosNesseDia) * 100
+        : 0;
 
     return {
       dia: diaMes,
