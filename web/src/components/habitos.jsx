@@ -9,6 +9,7 @@ function Habitos() {
     const [posicao, setPosicao] = useState(null)
     const [estatisticaDia, setEstatisticaDia] = useState({})
     const [editando, setEditando] = useState(null)
+    const [novoNome, setNovoNome] = useState("")
 
     useEffect(() => {
         async function buscaDeHabitos() {
@@ -86,7 +87,17 @@ function Habitos() {
         buscarEstatisticaDia()
     }, [])
 
-
+    async function atualizarNome(id) {
+        const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ novoNome: novoNome })
+        })
+        setHabito(habito.map((item) => (
+            item.id === id ? { ...item, nome: novoNome } : item
+        )))
+        setEditando(null)
+    }
 
     return (
         <>
@@ -101,7 +112,15 @@ function Habitos() {
                             e.preventDefault()
                             setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
                         }}>
-                            <span>{item.nome}</span>
+                            {
+                                editando === item.id ? <input type="text" value={novoNome} onChange={(e) => setNovoNome(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            atualizarNome(item.id)
+                                        }
+                                    }} />
+                                    : <span>{item.nome}</span>
+                            }
                             <input type="checkbox" checked={item.concluidoHoje}
                                 onChange={() => { atualizarCheck(item.id) }} />
                             <input type="checkBox" className="checkboxEstrela" checked={item.importante}
@@ -110,12 +129,19 @@ function Habitos() {
                     ))}
                     {
                         posicao && (
-                            <div>
-                                <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }} style={{
-                                    left: posicao.x,
-                                    top: posicao.y,
-                                }}>
+                            <div style={{
+                                left: posicao.x,
+                                top: posicao.y,
+                            }}>
+                                <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }}>
                                     Excluir Hábito
+                                </div>
+                                <div className="showHabito" onClick={() => {
+                                    setEditando(posicao.id)
+                                    const habitoEncontrado = habito.find((item) => item.id === posicao.id)
+                                    setNovoNome(habitoEncontrado.nome)
+                                }}>
+                                    Editar Hábito
                                 </div>
                             </div>
                         )
