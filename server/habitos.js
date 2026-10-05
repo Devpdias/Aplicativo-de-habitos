@@ -82,8 +82,11 @@ router.delete("/:id", async (req, res) => {
 
 router.get("/estatisticas/dias", async (req, res) => {
   const data = dataLocalHoje();
-  const habitosConcluidosHoje = await db("registros").where({ data });
-  const habitos = await db.select("*").from("habitos").whereNull("deletado_em")
+  const habitosConcluidosHoje = await db("registros")
+    .join("habitos", "registros.habito_id", "habitos.id")
+    .where("registros.data", data)
+    .whereNull("habitos.deletado_em");
+  const habitos = await db.select("*").from("habitos").whereNull("deletado_em");
 
   const numHabitosFeitosHoje = habitosConcluidosHoje.length;
   const numHabitos = habitos.length;

@@ -130,13 +130,15 @@ function Habitos() {
                     {
                         posicao && (
                             <div style={{
+                                position: "fixed",
                                 left: posicao.x,
                                 top: posicao.y,
                             }}>
                                 <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }}>
                                     Excluir Hábito
                                 </div>
-                                <div className="showHabito" onClick={() => {
+                                <div className="showHabito" onClick={(e) => {
+                                    e.stopPropagation()
                                     setEditando(posicao.id)
                                     const habitoEncontrado = habito.find((item) => item.id === posicao.id)
                                     setNovoNome(habitoEncontrado.nome)
