@@ -136,7 +136,7 @@ function Habitos() {
                             }}>
                                 <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }}>
                                     Excluir Hábito
-                                </div>
+                                </div>{/* checar porque não aparece por completo esta parte */}
                                 <div className="showHabito" onClick={(e) => {
                                     e.stopPropagation()
                                     setEditando(posicao.id)
@@ -144,7 +144,10 @@ function Habitos() {
                                     setNovoNome(habitoEncontrado.nome)
                                 }}>
                                     Editar Hábito
-                                </div>
+                                </div>{ /*1-fazer que o input apareça vazio e estilizado
+                                2- fazer que eu consiga digitar direto
+                                3- fazer que o menu de contexto desapareça após o enter
+                                */}
                             </div>
                         )
                     }
