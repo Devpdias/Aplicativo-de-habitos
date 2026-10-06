@@ -217,7 +217,7 @@ router.get("/estatisticas/mes", async (req, res) => {
   res.json({
     estatisticaMes,
   });
-});//checar possivel erro de calculo de atividades feitas no mapa
+});
 
 router.get("/importantes", async (req, res) => {
   const habitosImportantes = await db("habitos").where({ importante: true });
