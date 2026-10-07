@@ -129,8 +129,7 @@ function Habitos() {
                     ))}
                     {
                         posicao && (
-                            <div style={{
-                                position: "fixed",
+                            <div className="menuContexto" style={{
                                 left: posicao.x,
                                 top: posicao.y,
                             }}>
