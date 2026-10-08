@@ -75,6 +75,7 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const agora = new Date();
   await db("habitos").where({ id }).update({ deletado_em: agora });
+  await db("registros").where({ habito_id: id, data: dataLocalHoje() }).delete();
   res.json({
     mensagem: "hábito deletado",
   });
@@ -157,7 +158,7 @@ router.get("/estatisticas/semana", async (req, res) => {
   res.json({
     EstatisticaSemana,
   });
-});//verificar calculos aqui para não te erros
+}); //verificar calculos aqui para não te erros
 
 router.get("/estatisticas/mes", async (req, res) => {
   const { ano, mes } = req.query;

@@ -71,6 +71,6 @@ function Calendario() {
             </div>
         </div>
     )
-}
+}//possivel problema na atualização deste componente
 
 export default Calendario 
