@@ -71,6 +71,6 @@ function Calendario() {
             </div>
         </div>
     )
-}//lembrar de organizar este componente para atualizar depois
+}
 
 export default Calendario 

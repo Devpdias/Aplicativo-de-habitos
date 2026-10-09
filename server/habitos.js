@@ -158,7 +158,7 @@ router.get("/estatisticas/semana", async (req, res) => {
   res.json({
     EstatisticaSemana,
   });
-}); //verificar calculos aqui para não te erros
+});
 
 router.get("/estatisticas/mes", async (req, res) => {
   const { ano, mes } = req.query;
