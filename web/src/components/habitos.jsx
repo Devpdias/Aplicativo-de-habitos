@@ -113,7 +113,7 @@ function Habitos() {
                             setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
                         }}>
                             {
-                                editando === item.id ? <input type="text" value={novoNome} onChange={(e) => setNovoNome(e.target.value)}
+                                editando === item.id ? <input type="text" autoFocus onFocus={(e) => { e.target.select() }} onClick={(e) => { e.stopPropagation() }} value={novoNome} onChange={(e) => setNovoNome(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             atualizarNome(item.id)
@@ -135,17 +135,17 @@ function Habitos() {
                             }}>
                                 <div className="showHabito" onClick={() => { deleteHabito(posicao.id) }}>
                                     Excluir Hábito
-                                </div>{/* checar porque não aparece por completo esta parte */}
+                                </div>
                                 <div className="showHabito" onClick={(e) => {
                                     e.stopPropagation()
                                     setEditando(posicao.id)
                                     const habitoEncontrado = habito.find((item) => item.id === posicao.id)
                                     setNovoNome(habitoEncontrado.nome)
+                                    setPosicao(null)
                                 }}>
                                     Editar Hábito
-                                </div>{ /*1-fazer que o input apareça vazio e estilizado
+                                </div>{ /*
                                 2- fazer que eu consiga digitar direto
-                                3- fazer que o menu de contexto desapareça após o enter
                                 */}
                             </div>
                         )
