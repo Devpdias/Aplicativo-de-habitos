@@ -75,7 +75,9 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const agora = new Date();
   await db("habitos").where({ id }).update({ deletado_em: agora });
-  await db("registros").where({ habito_id: id, data: dataLocalHoje() }).delete();
+  await db("registros")
+    .where({ habito_id: id, data: dataLocalHoje() })
+    .delete();
   res.json({
     mensagem: "hábito deletado",
   });

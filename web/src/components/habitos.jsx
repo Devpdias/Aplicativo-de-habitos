@@ -144,9 +144,7 @@ function Habitos() {
                                     setPosicao(null)
                                 }}>
                                     Editar Hábito
-                                </div>{ /*
-                                2- fazer que eu consiga digitar direto
-                                */}
+                                </div>
                             </div>
                         )
                     }
