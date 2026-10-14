@@ -21,6 +21,9 @@ function Habitos() {
     }, [])
 
     async function criarHabito(nome) {
+        if (nome.trim() === "") {
+            return
+        }
         const resposta = await fetch("http://localhost:3220/habitos", {
             method: "POST",
             headers: {
@@ -91,7 +94,7 @@ function Habitos() {
         if (novoNome.trim() === "") {
             setEditando(null)
             return
-        }
+        } ''
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
