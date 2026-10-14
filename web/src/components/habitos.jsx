@@ -118,6 +118,10 @@ function Habitos() {
                                         if (e.key === "Enter") {
                                             atualizarNome(item.id)
                                         }
+                                        if (e.key === "Escape") {
+                                            setEditando(null)
+                                            setPosicao(null)
+                                        }
                                     }} />
                                     : <span>{item.nome}</span>
                             }
