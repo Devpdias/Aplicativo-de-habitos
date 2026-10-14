@@ -88,6 +88,10 @@ function Habitos() {
     }, [])
 
     async function atualizarNome(id) {
+        if (novoNome.trim() === "") {
+            setEditando(null)
+            return
+        }
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
