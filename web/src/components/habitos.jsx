@@ -37,6 +37,7 @@ function Habitos() {
             const habitoNovo = await resposta.json()
             setHabito([...habito, habitoNovo])
         }
+        buscarEstatisticaDia()
     }
 
     async function atualizarCheck(id) {
@@ -73,6 +74,7 @@ function Habitos() {
         if (resposta.ok) {
             setHabito(habito.filter((item) => item.id !== id))
         }
+        buscarEstatisticaDia()
     }
 
     useEffect(() => {

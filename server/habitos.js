@@ -94,7 +94,8 @@ router.get("/estatisticas/dias", async (req, res) => {
   const numHabitosFeitosHoje = habitosConcluidosHoje.length;
   const numHabitos = habitos.length;
 
-  const porcentagem = (numHabitosFeitosHoje / numHabitos) * 100;
+  const porcentagem =
+    numHabitos > 0 ? (numHabitosFeitosHoje / numHabitos) * 100 : 0;
 
   res.json({
     numHabitosFeitosHoje,
@@ -223,7 +224,9 @@ router.get("/estatisticas/mes", async (req, res) => {
 });
 
 router.get("/importantes", async (req, res) => {
-  const habitosImportantes = await db("habitos").where({ importante: true });
+  const habitosImportantes = await db("habitos")
+    .where({ importante: true })
+    .whereNull("deletado_em");
   const data = dataLocalHoje();
   const concluidoHoje = await db("registros").where({ data });
   const habitosComStatus = habitosImportantes.map((habito) => {
