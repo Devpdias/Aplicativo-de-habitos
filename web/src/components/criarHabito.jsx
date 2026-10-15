@@ -1,7 +1,7 @@
 import '../estilos/app.css';
 import { useState } from 'react';
 
-function CriarHabito({aoCriar}) {
+function CriarHabito({ aoCriar }) {
 
   const [nome, setNome] = useState("")
 
@@ -14,7 +14,11 @@ function CriarHabito({aoCriar}) {
     <>
       <section id="center">
         <div>
-          <input value={nome} type="text" id="inHabito" placeholder='Escreva Novo Hábito' onChange={(e) => setNome(e.target.value)} />
+          <input value={nome} type="text" id="inHabito" placeholder='Escreva Novo Hábito' onChange={(e) => setNome(e.target.value)} onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              mandarHabito()
+            }
+          }} />
         </div>
         <div
           className="divBotoes">
