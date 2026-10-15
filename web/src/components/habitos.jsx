@@ -30,42 +30,49 @@ function Habitos() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                nome: nome
+                nome: nome.trim()
             })
         })
-
-        const habitoNovo = await resposta.json()
-        setHabito([...habito, habitoNovo])
+        if (resposta.ok) {
+            const habitoNovo = await resposta.json()
+            setHabito([...habito, habitoNovo])
+        }
     }
 
     async function atualizarCheck(id) {
         const atualizar = await fetch(`http://localhost:3220/habitos/${id}/registros`, {
             method: "PATCH",
         });
-        const resposta = await atualizar.json()
-        setHabito(habito.map((item) => (
-            item.id === id ? { ...item, concluidoHoje: resposta.concluido }
-                : item
-        )))
-        buscarEstatisticaDia()
+        if (atualizar.ok) {
+            const resposta = await atualizar.json()
+            setHabito(habito.map((item) => (
+                item.id === id ? { ...item, concluidoHoje: resposta.concluido }
+                    : item
+            )))
+            buscarEstatisticaDia()
+        }
     };
 
     async function atualizarImportante(id) {
         const atualizar = await fetch(`http://localhost:3220/habitos/${id}/importante`, {
             method: "PATCH",
         })
-        const resposta = await atualizar.json()
-        setHabito(habito.map((item) => (
-            item.id === id ? { ...item, importante: resposta.importante }
-                : item
-        )))
+        if (atualizar.ok) {
+            const resposta = await atualizar.json()
+            setHabito(habito.map((item) => (
+                item.id === id ? { ...item, importante: resposta.importante }
+                    : item
+            )))
+        }
     }
 
     async function deleteHabito(id) {
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "DELETE"
         })
-        setHabito(habito.filter((item) => item.id !== id))
+        if (resposta.ok) {
+            setHabito(habito.filter((item) => item.id !== id))
+        }
     }
 
     useEffect(() => {
@@ -94,15 +101,17 @@ function Habitos() {
         if (novoNome.trim() === "") {
             setEditando(null)
             return
-        } ''
+        }
         const resposta = await fetch(`http://localhost:3220/habitos/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ novoNome: novoNome })
+            body: JSON.stringify({ novoNome: novoNome.trim() })
         })
-        setHabito(habito.map((item) => (
-            item.id === id ? { ...item, nome: novoNome } : item
-        )))
+        if (resposta.ok) {
+            setHabito(habito.map((item) => (
+                item.id === id ? { ...item, nome: novoNome.trim() } : item
+            )))
+        }
         setEditando(null)
     }
 
