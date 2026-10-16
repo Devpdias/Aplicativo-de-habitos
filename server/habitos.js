@@ -24,6 +24,8 @@ router.post("/", async (req, res) => {
     return;
   }
 
+  const nomeValidado = nome.trim();
+
   const [id] = await db("habitos").insert({
     nome,
     criado_em: agora,
@@ -31,7 +33,7 @@ router.post("/", async (req, res) => {
 
   res.json({
     id,
-    nome,
+    nomeValidado,
   });
 });
 
@@ -293,7 +295,9 @@ router.patch("/:id", async (req, res) => {
     return;
   }
 
-  await db("habitos").where({ id }).update({ nome: novoNome });
+  const nomeValidado = novoNome.trim();
+
+  await db("habitos").where({ id }).update({ nome: nomeValidado });
 
   res.json({
     mensagem: "Nome do hábito trocado",
