@@ -19,6 +19,11 @@ router.post("/", async (req, res) => {
   const { nome } = req.body;
   const agora = new Date();
 
+  if (typeof nome !== "string" || nome.trim() === "") {
+    res.status(400).json({ mensagem: "Erro ao enviar hábito" });
+    return;
+  }
+
   const [id] = await db("habitos").insert({
     nome,
     criado_em: agora,
@@ -282,6 +287,11 @@ router.get("/:id/streak", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { novoNome } = req.body;
+
+  if (typeof novoNome !== "string" || novoNome.trim() === "") {
+    res.status(400).json({ mensagem: "Erro na tentativa de editar hábito" });
+    return;
+  }
 
   await db("habitos").where({ id }).update({ nome: novoNome });
 
