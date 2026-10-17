@@ -27,13 +27,13 @@ router.post("/", async (req, res) => {
   const nomeValidado = nome.trim();
 
   const [id] = await db("habitos").insert({
-    nome,
+    nome: nomeValidado,
     criado_em: agora,
   });
 
   res.json({
     id,
-    nomeValidado,
+    nome: nomeValidado,
   });
 });
 
@@ -249,7 +249,17 @@ router.get("/importantes", async (req, res) => {
 
 router.patch("/:id/importante", async (req, res) => {
   const { id } = req.params;
-  const habitoImportante = await db("habitos").where({ id }).first();
+  const habitoImportante = await db("habitos")
+    .where({ id })
+    .whereNull("deletado_em")
+    .first();
+
+  if (!habitoImportante) {
+    res
+      .status(404)
+      .json({ mensagem: "Erro ao tentar marcar hábito como importante" });
+    return;
+  }
 
   const novoValor = !habitoImportante.importante;
 
