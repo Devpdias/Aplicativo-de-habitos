@@ -55,6 +55,14 @@ router.patch("/:id/registros", async (req, res) => {
   const { id } = req.params;
   const data = dataLocalHoje();
 
+  const habito = await db("habitos")
+    .where({ id })
+    .whereNull("deletado_em")
+    .first();
+
+  if (!id) {
+  }
+
   const registroExistente = await db("registros")
     .where({ data, habito_id: id })
     .first();
