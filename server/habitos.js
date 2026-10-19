@@ -60,7 +60,9 @@ router.patch("/:id/registros", async (req, res) => {
     .whereNull("deletado_em")
     .first();
 
-  if (!id) {
+  if (!habito) {
+    res.status(404).json({ mensagem: "Hábito não encontrado" });
+    return;
   }
 
   const registroExistente = await db("registros")
@@ -89,6 +91,17 @@ router.patch("/:id/registros", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const agora = new Date();
+
+  const habito = await db("habitos")
+    .where({ id })
+    .whereNull("deletado_em")
+    .first();
+
+  if (!habito) {
+    res.status(404).json({ mensagem: "Hábito não encontrado" });
+    return;
+  }
+
   await db("habitos").where({ id }).update({ deletado_em: agora });
   await db("registros")
     .where({ habito_id: id, data: dataLocalHoje() })
@@ -298,7 +311,19 @@ async function calcularStreak(id) {
 
 router.get("/:id/streak", async (req, res) => {
   const { id } = req.params;
+
+  const habito = await db("habitos")
+    .where({ id })
+    .whereNull("deletado_em")
+    .first();
+
+  if (!habito) {
+    res.status(404).json({ mensagem: 0 });
+    return;
+  }
+
   const habitoStreak = await calcularStreak(id);
+
   res.json({
     habitoStreak,
   });
@@ -307,6 +332,16 @@ router.get("/:id/streak", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { novoNome } = req.body;
+
+  const habito = await db("habitos")
+    .where({ id })
+    .whereNull("deletado_em")
+    .first();
+
+  if (!habito) {
+    res.status(404).json({ mensagem: "Hábito não encontrado" });
+    return;
+  }
 
   if (typeof novoNome !== "string" || novoNome.trim() === "") {
     res.status(400).json({ mensagem: "Erro na tentativa de editar hábito" });
