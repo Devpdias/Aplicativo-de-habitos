@@ -318,7 +318,7 @@ router.get("/:id/streak", async (req, res) => {
     .first();
 
   if (!habito) {
-    res.status(404).json({ mensagem: 0 });
+    res.status(404).json({ mensagem: "Hábito não encontrado"});
     return;
   }
 
