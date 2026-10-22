@@ -10,6 +10,8 @@ function Habitos() {
     const [estatisticaDia, setEstatisticaDia] = useState({})
     const [editando, setEditando] = useState(null)
     const [novoNome, setNovoNome] = useState("")
+    const larguraMenu = 160
+    const alturaMenu = 80
 
     useEffect(() => {
         async function buscaDeHabitos() {
@@ -91,8 +93,10 @@ function Habitos() {
 
     async function buscarEstatisticaDia() {
         const resposta = await fetch('http://localhost:3220/habitos/estatisticas/dias')
-        const dados = await resposta.json()
-        setEstatisticaDia(dados)
+        if (resposta.ok) {
+            const dados = await resposta.json()
+            setEstatisticaDia(dados)
+        }
     }
 
     useEffect(() => {
@@ -128,7 +132,9 @@ function Habitos() {
                     {habito.sort((a, b) => b.importante - a.importante).map((item) => (
                         <div key={item.id} onContextMenu={(e) => {
                             e.preventDefault()
-                            setPosicao({ x: e.clientX, y: e.clientY, id: item.id })
+                            const limiteX = window.innerWidth - larguraMenu
+                            const limiteY = window.innerHeight - alturaMenu
+                            setPosicao({ x: Math.min(e.clientX, limiteX), y: Math.min(e.clientY, limiteY), id: item.id })
                         }}>
                             {
                                 editando === item.id ? <input type="text" autoFocus onFocus={(e) => { e.target.select() }} onClick={(e) => { e.stopPropagation() }} value={novoNome} onChange={(e) => setNovoNome(e.target.value)}
