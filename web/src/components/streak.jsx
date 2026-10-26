@@ -14,7 +14,7 @@ function Streak({ habitoId, concluidoHoje }) {
         buscarStreak()
     }, [habitoId, concluidoHoje])
 
-    return <span>🔥 {streak}</span>
+    return <span> {streak}🔥 </span>
 }
 
 export default Streak
