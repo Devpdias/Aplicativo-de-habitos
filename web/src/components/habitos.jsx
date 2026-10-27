@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import CriarHabito from "./criarHabito"
 import EstatisticaDia from "./estatisticaDia"
 import Calendario from "./calendario"
+import Streak from "./streak"
 
 function Habitos() {
 
@@ -136,6 +137,7 @@ function Habitos() {
                             const limiteY = window.innerHeight - alturaMenu
                             setPosicao({ x: Math.min(e.clientX, limiteX), y: Math.min(e.clientY, limiteY), id: item.id })
                         }}>
+                            <Streak habitoId={item.id} concluidoHoje={item.concluidoHoje} />
                             {
                                 editando === item.id ? <input type="text" autoFocus onFocus={(e) => { e.target.select() }} onClick={(e) => { e.stopPropagation() }} value={novoNome} onChange={(e) => setNovoNome(e.target.value)}
                                     onKeyDown={(e) => {
