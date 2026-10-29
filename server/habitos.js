@@ -293,7 +293,16 @@ router.patch("/:id/importante", async (req, res) => {
 
 async function calcularStreak(id) {
   let dataAtual = new Date();
+  let dataDeHoje = formatarDataLocal(dataAtual);
   let streak = 0;
+  const registroHoje = await db("registros")
+    .where({ data: dataDeHoje, concluido: true, habito_id: id })
+    .first();
+
+  if (!registroHoje) {
+    dataAtual.setDate(dataAtual.getDate() - 1);
+  }
+
   while (true) {
     const dataBuscada = formatarDataLocal(dataAtual);
     const registros = await db("registros")
@@ -318,7 +327,7 @@ router.get("/:id/streak", async (req, res) => {
     .first();
 
   if (!habito) {
-    res.status(404).json({ mensagem: "Hábito não encontrado"});
+    res.status(404).json({ mensagem: "Hábito não encontrado" });
     return;
   }
 
