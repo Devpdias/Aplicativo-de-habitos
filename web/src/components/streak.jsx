@@ -14,6 +14,10 @@ function Streak({ habitoId, concluidoHoje }) {
         buscarStreak()
     }, [habitoId, concluidoHoje])
 
+    if (streak <= 0) {
+        return null
+    }
+
     return <span> {streak}🔥 </span>
 }
 
