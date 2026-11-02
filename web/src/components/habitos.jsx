@@ -17,8 +17,10 @@ function Habitos() {
     useEffect(() => {
         async function buscaDeHabitos() {
             const resposta = await fetch('http://localhost:3220/habitos')
-            const dados = await resposta.json()
-            setHabito(dados)
+            if (resposta.ok) {
+                const dados = await resposta.json()
+                setHabito(dados)
+            }
         }
         buscaDeHabitos()
     }, [])
