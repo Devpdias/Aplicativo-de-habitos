@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+:root {
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+}
+
+body {
+  background-color: #16171d;
+  color: #e5e7eb;
+}
+
 .adicionar {
   font-size: 16px;
   padding: 5px 10px;
