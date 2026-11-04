@@ -291,32 +291,32 @@ router.patch("/:id/importante", async (req, res) => {
   });
 });
 
-async function calcularStreak(id) {
-  let dataAtual = new Date();
-  let dataDeHoje = formatarDataLocal(dataAtual);
-  let streak = 0;
-  const registroHoje = await db("registros")
-    .where({ data: dataDeHoje, concluido: true, habito_id: id })
-    .first();
-
-  if (!registroHoje) {
-    dataAtual.setDate(dataAtual.getDate() - 1);
-  }
-
-  while (true) {
-    const dataBuscada = formatarDataLocal(dataAtual);
-    const registros = await db("registros")
-      .where({ data: dataBuscada, concluido: true, habito_id: id })
+  async function calcularStreak(id) {
+    let dataAtual = new Date();
+    let dataDeHoje = formatarDataLocal(dataAtual);
+    let streak = 0;
+    const registroHoje = await db("registros")
+      .where({ data: dataDeHoje, concluido: true, habito_id: id })
       .first();
-    if (registros) {
-      streak++;
+
+    if (!registroHoje) {
       dataAtual.setDate(dataAtual.getDate() - 1);
-    } else {
-      break;
     }
+
+    while (true) {
+      const dataBuscada = formatarDataLocal(dataAtual);
+      const registros = await db("registros")
+        .where({ data: dataBuscada, concluido: true, habito_id: id })
+        .first();
+      if (registros) {
+        streak++;
+        dataAtual.setDate(dataAtual.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    return streak;
   }
-  return streak;
-}
 
 router.get("/:id/streak", async (req, res) => {
   const { id } = req.params;

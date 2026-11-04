@@ -127,7 +127,7 @@ function Habitos() {
     return (
         <>
             <div>
-                <h1 className="text-red-500">Meus Hábitos</h1>
+                <h1 className="text-3xl font-bold mb-4">Meus Hábitos</h1>
                 <Calendario></Calendario>
                 <EstatisticaDia dados={estatisticaDia}></EstatisticaDia>
                 <CriarHabito aoCriar={criarHabito} />
