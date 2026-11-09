@@ -3,9 +3,11 @@ import Menu from './menu.jsx'
 
 function Layout() {
     return (
-        <div>
+        <div className="flex h-screen">
             <Menu />
-            <Outlet />
+            <main className="flex-1 overflow-auto p-6" >
+                <Outlet />
+            </main>
         </div>
     )
 }
