@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import { PanelLeft } from 'lucide-react';
 
 
 function classeDoLink({ isActive }) {
@@ -8,9 +9,11 @@ function classeDoLink({ isActive }) {
         : `${base} border-transparent`
 }
 
-function Menu() {
+function Menu({ aberto, aoMudar }) {
+
     return (
-        <nav className="w-60 shrink-0 bg-[#1f2028] p-3 flex flex-col gap">
+        <nav className={`shrink-0 bg-[#1f2028] flex flex-col gap-1 overflow-hidden whitespace-nowrap transition-all duration-300 ${aberto ? "w-60 p-3" : "w-0 p-0"}`}>
+            <button onClick={ aoMudar }><PanelLeft /></button>
             <NavLink to="/habitos" className={classeDoLink}>Hábitos</NavLink>
             <NavLink to="/importantes" className={classeDoLink}>Importantes</NavLink>
         </nav>
