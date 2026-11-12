@@ -15,7 +15,7 @@ function Layout() {
             <Menu aberto={aberto} aoMudar={mudarAberto} />
             <main className="flex-1 overflow-auto p-6" >
                 {!aberto && (
-                    < button onClick={mudarAberto} className="mb-4 text-2xl sticky top-0 z-10 bg-[#16171d]">
+                    < button onClick={mudarAberto} className="mb-4 text-2xl sticky top-0 z-10 bg-[#16171d]">{/* retirar bg quando configurar tudo */}
                         ☰
                     </button>
                 )
