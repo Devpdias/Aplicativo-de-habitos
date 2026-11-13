@@ -14,8 +14,8 @@ function classeDoLink({ isActive }) {
 function Menu({ aberto, aoMudar }) {
 
     return (
-        <nav className={`shrink-0 bg-[#1f2028] flex flex-col gap-1 overflow-hidden whitespace-nowrap transition-all duration-300 ${aberto ? "w-60 p-3" : "w-0 p-0"}`}>
-            <button onClick={aoMudar}><PanelLeft className="size-5 shrink-0 mb-3" /></button>
+        <nav className={`shrink-0 bg-[#1f2028] flex flex-col gap-2 overflow-hidden whitespace-nowrap transition-all duration-300 ${aberto ? "w-60 p-3" : "w-0 p-0"}`}>
+            <button onClick={aoMudar}><PanelLeft className="size-5 shrink-0" /></button>
             <NavLink to="/" className={classeDoLink}><House className="size-4 shrink-0" /> Página inicial</NavLink>
             <NavLink to="/habitos" className={classeDoLink}>Hábitos</NavLink>
             <NavLink to="/importantes" className={classeDoLink}>Importantes</NavLink>
